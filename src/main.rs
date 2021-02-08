@@ -23,6 +23,8 @@ fn descend(d: Device) {
     print_info(&d);
 
     let children = fs::read_dir(d.path).unwrap();
+    let mut children_devices: Vec<Device> = Vec::new();
+
     for entry in children {
         let child = if let Ok(d) = entry { d } else { continue; };
 
@@ -32,7 +34,19 @@ fn descend(d: Device) {
             continue;
         }
 
-        println!("{:?}", child);
+
+        let path = child.path();
+
+        children_devices.push(Device {
+            filename,
+            path
+        });
+    }
+
+    children_devices.sort();
+
+    for child_device in children_devices {
+        descend(child_device);
     }
 }
 
