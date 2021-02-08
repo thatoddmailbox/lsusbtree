@@ -10,17 +10,21 @@ fn read_device_file(d: &Device, filename: &str) -> String {
     return std::fs::read_to_string(d.path.join(filename)).unwrap_or("".to_string()).trim().to_string();
 }
 
-fn print_info(d: &Device) {
+fn print_info(d: &Device, level: usize) {
     let vid = read_device_file(d, "idVendor");
     let pid = read_device_file(d, "idProduct");
     let manufacturer = read_device_file(d, "manufacturer");
     let product = read_device_file(d, "product");
-    println!("{} {} {} {}", vid, pid, manufacturer, product);
+
+    let offset = if level > 0 {
+        "  ".repeat(level - 1) + "|-"
+    } else { "".to_owned() };
+
+    println!("{}+ {} {} {} {}", offset, vid, pid, manufacturer, product);
 }
 
-fn descend(d: Device) {
-    println!("{:?}", d);
-    print_info(&d);
+fn descend(d: Device, level: usize) {
+    print_info(&d, level);
 
     let children = fs::read_dir(d.path).unwrap();
     let mut children_devices: Vec<Device> = Vec::new();
@@ -46,7 +50,7 @@ fn descend(d: Device) {
     children_devices.sort();
 
     for child_device in children_devices {
-        descend(child_device);
+        descend(child_device, level + 1);
     }
 }
 
@@ -74,6 +78,6 @@ fn main() {
     roots.sort();
 
     for root in roots {
-        descend(root);
+        descend(root, 0);
     }
 }
