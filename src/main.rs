@@ -1,6 +1,6 @@
 use std::fs;
 
-#[derive(Debug)]
+#[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
 struct Root {
     filename: String,
     path: std::path::PathBuf
@@ -26,6 +26,8 @@ fn main() {
             path
         });
     }
+
+    roots.sort();
 
     println!("{:?}", roots);
 }
