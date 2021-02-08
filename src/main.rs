@@ -7,7 +7,7 @@ struct Device {
 }
 
 fn read_device_file(d: &Device, filename: &str) -> String {
-    return std::fs::read_to_string(d.path.join(filename)).unwrap_or("".to_string());
+    return std::fs::read_to_string(d.path.join(filename)).unwrap_or("".to_string()).trim().to_string();
 }
 
 fn print_info(d: &Device) {
