@@ -6,6 +6,21 @@ struct Device {
     path: std::path::PathBuf
 }
 
+fn read_device_file(d: &Device, filename: &str) -> String {
+    return std::fs::read_to_string(d.path.join(filename)).unwrap();
+}
+
+fn print_info(d: &Device) {
+    let vid = read_device_file(d, "idVendor");
+    let pid = read_device_file(d, "idProduct");
+    println!("{} {}", vid, pid);
+}
+
+fn descend(d: Device) {
+    println!("{:?}", d);
+    print_info(&d);
+}
+
 fn main() {
     let devices = fs::read_dir("/sys/bus/usb/devices").unwrap();
     let mut roots: Vec<Device> = Vec::new();
@@ -29,5 +44,7 @@ fn main() {
 
     roots.sort();
 
-    println!("{:?}", roots);
+    for root in roots {
+        descend(root);
+    }
 }
