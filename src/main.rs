@@ -13,7 +13,9 @@ fn read_device_file(d: &Device, filename: &str) -> String {
 fn print_info(d: &Device) {
     let vid = read_device_file(d, "idVendor");
     let pid = read_device_file(d, "idProduct");
-    println!("{} {}", vid, pid);
+    let manufacturer = read_device_file(d, "manufacturer");
+    let product = read_device_file(d, "product");
+    println!("{} {} {} {}", vid, pid, manufacturer, product);
 }
 
 fn descend(d: Device) {
