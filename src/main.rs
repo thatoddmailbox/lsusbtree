@@ -21,6 +21,19 @@ fn print_info(d: &Device) {
 fn descend(d: Device) {
     println!("{:?}", d);
     print_info(&d);
+
+    let children = fs::read_dir(d.path).unwrap();
+    for entry in children {
+        let child = if let Ok(d) = entry { d } else { continue; };
+
+        let filename_str = child.file_name().into_string();
+        let filename = filename_str.unwrap_or("".to_string());
+        if !filename.chars().next().unwrap().is_numeric() {
+            continue;
+        }
+
+        println!("{:?}", child);
+    }
 }
 
 fn main() {
@@ -31,7 +44,7 @@ fn main() {
         let device = if let Ok(d) = entry { d } else { continue; };
 
         let filename_str = device.file_name().into_string();
-        let filename: std::string::String = filename_str.unwrap_or("".to_string());
+        let filename = filename_str.unwrap_or("".to_string());
         if !filename.starts_with("usb") {
             continue;
         }
