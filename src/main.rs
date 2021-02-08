@@ -77,7 +77,13 @@ fn main() {
 
     roots.sort();
 
+    let mut first = true;
     for root in roots {
+        if first {
+            first = false;
+        } else {
+            println!("");
+        }
         descend(root, 0);
     }
 }
