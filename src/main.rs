@@ -1,14 +1,14 @@
 use std::fs;
 
 #[derive(Debug, Eq, Ord, PartialEq, PartialOrd)]
-struct Root {
+struct Device {
     filename: String,
     path: std::path::PathBuf
 }
 
 fn main() {
     let devices = fs::read_dir("/sys/bus/usb/devices").unwrap();
-    let mut roots: Vec<Root> = Vec::new();
+    let mut roots: Vec<Device> = Vec::new();
 
     for entry in devices {
         let device = if let Ok(d) = entry { d } else { continue; };
@@ -21,7 +21,7 @@ fn main() {
 
         let path = device.path();
 
-        roots.push(Root {
+        roots.push(Device {
             filename,
             path
         });
