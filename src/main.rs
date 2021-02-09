@@ -58,8 +58,8 @@ fn descend(d: &Device, level: usize, have_siblings: bool) {
     print_info(&d, level, children_devices.len() > 0, have_siblings);
     let children_have_siblings = children_devices.len() > 1;
 
-    for child_device in children_devices {
-        descend(&child_device, level + 1, children_have_siblings);
+    for (i, child_device) in children_devices.iter().enumerate() {
+        descend(child_device, level + 1, children_have_siblings && (i != children_devices.len() - 1));
     }
 }
 
