@@ -26,7 +26,7 @@ fn print_info(d: &Device, level: usize, have_children: bool, have_siblings: bool
     println!("{}{} {} {} {} {} ({})", offset, indicator, vid, pid, manufacturer, product, d.filename);
 }
 
-fn descend(d: Device, level: usize, have_siblings: bool) {
+fn descend(d: &Device, level: usize, have_siblings: bool) {
     let children = fs::read_dir(d.path.as_path()).unwrap();
     let mut children_devices: Vec<Device> = Vec::new();
 
@@ -59,7 +59,7 @@ fn descend(d: Device, level: usize, have_siblings: bool) {
     let children_have_siblings = children_devices.len() > 1;
 
     for child_device in children_devices {
-        descend(child_device, level + 1, children_have_siblings);
+        descend(&child_device, level + 1, children_have_siblings);
     }
 }
 
@@ -93,6 +93,6 @@ fn main() {
         } else {
             println!("");
         }
-        descend(root, 0, false);
+        descend(&root, 0, false);
     }
 }
