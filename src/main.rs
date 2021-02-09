@@ -17,10 +17,10 @@ fn print_info(d: &Device, level: usize, have_children: bool) {
     let product = read_device_file(d, "product");
 
     let offset = if level > 0 {
-        "  ".repeat(level - 1) + "└─"
+        "  ".repeat(level - 1) + "\u{2514}\u{2500}"
     } else { "".to_owned() };
 
-    let indicator = if have_children { "┬" } else { "─" };
+    let indicator = if have_children { "\u{252C}" } else { "\u{2500}" };
 
     println!("{}{} {} {} {} {} ({})", offset, indicator, vid, pid, manufacturer, product, d.filename);
 }
