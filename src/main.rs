@@ -24,9 +24,7 @@ fn print_info(d: &Device, level: usize) {
 }
 
 fn descend(d: Device, level: usize) {
-    print_info(&d, level);
-
-    let children = fs::read_dir(d.path).unwrap();
+    let children = fs::read_dir(d.path.as_path()).unwrap();
     let mut children_devices: Vec<Device> = Vec::new();
 
     for entry in children {
@@ -53,6 +51,8 @@ fn descend(d: Device, level: usize) {
     }
 
     children_devices.sort();
+
+    print_info(&d, level);
 
     for child_device in children_devices {
         descend(child_device, level + 1);
