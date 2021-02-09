@@ -20,7 +20,7 @@ fn print_info(d: &Device, level: usize) {
         "  ".repeat(level - 1) + "|-"
     } else { "".to_owned() };
 
-    println!("{}+ {} {} {} {}", offset, vid, pid, manufacturer, product);
+    println!("{}+ {} {} {} {} ({})", offset, vid, pid, manufacturer, product, d.filename);
 }
 
 fn descend(d: Device, level: usize) {
