@@ -38,8 +38,13 @@ fn descend(d: Device, level: usize) {
             continue;
         }
 
-
         let path = child.path();
+
+        let interface_file = path.join("bInterfaceClass");
+        if interface_file.exists() {
+            // it's actually an interface, ignore it
+            continue;
+        }
 
         children_devices.push(Device {
             filename,
