@@ -10,17 +10,19 @@ fn read_device_file(d: &Device, filename: &str) -> String {
     return std::fs::read_to_string(d.path.join(filename)).unwrap_or("".to_string()).trim().to_string();
 }
 
-fn print_info(d: &Device, level: usize) {
+fn print_info(d: &Device, level: usize, have_children: bool) {
     let vid = read_device_file(d, "idVendor");
     let pid = read_device_file(d, "idProduct");
     let manufacturer = read_device_file(d, "manufacturer");
     let product = read_device_file(d, "product");
 
     let offset = if level > 0 {
-        "  ".repeat(level - 1) + "|-"
+        "  ".repeat(level - 1) + "└─"
     } else { "".to_owned() };
 
-    println!("{}+ {} {} {} {} ({})", offset, vid, pid, manufacturer, product, d.filename);
+    let indicator = if have_children { "┬" } else { "─" };
+
+    println!("{}{} {} {} {} {} ({})", offset, indicator, vid, pid, manufacturer, product, d.filename);
 }
 
 fn descend(d: Device, level: usize) {
@@ -52,7 +54,7 @@ fn descend(d: Device, level: usize) {
 
     children_devices.sort();
 
-    print_info(&d, level);
+    print_info(&d, level, children_devices.len() > 0);
 
     for child_device in children_devices {
         descend(child_device, level + 1);
