@@ -15,3 +15,4 @@ If the tool seems to freeze halfway through displaying the tree, this usually in
 * Give the option to read from `usb.ids` instead of the manufacturer/product descriptors
 * Display speed (low, high, full, super, super+) for each device (or, if that's not possible, at least the version: 1.0, 2.0, 3.0, etc)
 * Handle blank manufacturer/product descriptors better
+* Add flag to display interfaces for each device
